@@ -1,0 +1,65 @@
+Date,Stage,Home,Away,Home_goals,Away_goals,Winner,Stadium,Latitude,Longitude,City
+14-06-2018,Group-1,Russia,Saudi Arabia,5,0,Russia,Luzhniki Stadium,55.7158,37.5537,Moscow
+15-06-2018,Group-1,Egypt,Uruguay,0,1,Uruguay,Saint Petersburg Stadium,59.9727,30.2219,Saint Petersburg
+15-06-2018,Group-1,Morocco,Iran,0,1,Iran,Fisht Stadium,43.402,39.9549,Sochi
+15-06-2018,Group-1,Portugal,Spain,3,3,Draw,Kazan Arena,55.82,49.1602,Kazan
+16-06-2018,Group-1,France,Australia,2,1,France,Nizhny Novgorod Stadium,56.3371,43.963,Nizhny Novgorod
+16-06-2018,Group-1,Argentina,Iceland,1,1,Draw,Samara Arena,53.278,50.2372,Samara
+16-06-2018,Group-1,Peru,Denmark,0,1,Denmark,Volgograd Arena,48.7344,44.5486,Volgograd
+16-06-2018,Group-1,Croatia,Nigeria,2,0,Croatia,Mordovia Arena,54.1808,45.203,Saransk
+17-06-2018,Group-1,Costa Rica,Serbia,0,1,Serbia,Rostov Arena,47.2144,39.7386,Rostov-on-Don
+17-06-2018,Group-1,Germany,Mexico,0,1,Mexico,Kaliningrad Stadium,54.7104,20.509,Kaliningrad
+17-06-2018,Group-1,Brazil,Switzerland,1,1,Draw,Spartak Stadium,55.8188,37.44,Moscow
+18-06-2018,Group-1,Sweden,South Korea,1,0,Sweden,Central Stadium,56.8325,60.5736,Yekaterinburg
+18-06-2018,Group-1,Belgium,Panama,3,0,Belgium,Luzhniki Stadium,55.7158,37.5537,Moscow
+18-06-2018,Group-1,Tunisia,England,1,2,England,Saint Petersburg Stadium,59.9727,30.2219,Saint Petersburg
+19-06-2018,Group-1,Colombia,Japan,1,2,Japan,Fisht Stadium,43.402,39.9549,Sochi
+19-06-2018,Group-1,Poland,Senegal,1,2,Senegal,Kazan Arena,55.82,49.1602,Kazan
+19-06-2018,Group-2,Russia,Egypt,3,1,Russia,Nizhny Novgorod Stadium,56.3371,43.963,Nizhny Novgorod
+20-06-2018,Group-2,Portugal,Morocco,1,0,Portugal,Samara Arena,53.278,50.2372,Samara
+20-06-2018,Group-2,Uruguay,Saudi Arabia,1,0,Uruguay,Volgograd Arena,48.7344,44.5486,Volgograd
+20-06-2018,Group-2,Iran,Spain,0,1,Spain,Mordovia Arena,54.1808,45.203,Saransk
+21-06-2018,Group-2,Denmark,Australia,1,1,Draw,Rostov Arena,47.2144,39.7386,Rostov-on-Don
+21-06-2018,Group-2,France,Peru,1,0,France,Kaliningrad Stadium,54.7104,20.509,Kaliningrad
+21-06-2018,Group-2,Argentina,Croatia,0,3,Croatia,Spartak Stadium,55.8188,37.44,Moscow
+22-06-2018,Group-2,Brazil,Costa Rica,2,0,Brazil,Central Stadium,56.8325,60.5736,Yekaterinburg
+22-06-2018,Group-2,Nigeria,Iceland,2,0,Nigeria,Luzhniki Stadium,55.7158,37.5537,Moscow
+22-06-2018,Group-2,Serbia,Switzerland,1,2,Switzerland,Saint Petersburg Stadium,59.9727,30.2219,Saint Petersburg
+23-06-2018,Group-2,Belgium,Tunisia,5,2,Belgium,Fisht Stadium,43.402,39.9549,Sochi
+23-06-2018,Group-2,South Korea,Mexico,1,2,Mexico,Kazan Arena,55.82,49.1602,Kazan
+23-06-2018,Group-2,Germany,Sweden,2,1,Germany,Nizhny Novgorod Stadium,56.3371,43.963,Nizhny Novgorod
+24-06-2018,Group-2,England,Panama,6,1,England,Samara Arena,53.278,50.2372,Samara
+24-06-2018,Group-2,Japan,Senegal,2,2,Draw,Volgograd Arena,48.7344,44.5486,Volgograd
+24-06-2018,Group-2,Poland,Colombia,0,3,Columbia,Mordovia Arena,54.1808,45.203,Saransk
+25-06-2018,Group-3,Saudi Arabia,Egypt,2,1,Saudi Arabia,Rostov Arena,47.2144,39.7386,Rostov-on-Don
+25-06-2018,Group-3,Uruguay,Russia,3,0,Uruguay,Kaliningrad Stadium,54.7104,20.509,Kaliningrad
+25-06-2018,Group-3,Iran,Portugal,1,1,Draw,Spartak Stadium,55.8188,37.44,Moscow
+25-06-2018,Group-3,Spain,Morocco,2,2,Draw,Central Stadium,56.8325,60.5736,Yekaterinburg
+26-06-2018,Group-3,Australia,Peru,0,2,Peru,Luzhniki Stadium,55.7158,37.5537,Moscow
+26-06-2018,Group-3,Denmark,France,0,0,Draw,Saint Petersburg Stadium,59.9727,30.2219,Saint Petersburg
+26-06-2018,Group-3,Nigeria,Argentina,1,2,Argentina,Fisht Stadium,43.402,39.9549,Sochi
+26-06-2018,Group-3,Iceland,Croatia,1,2,Croatia,Kazan Arena,55.82,49.1602,Kazan
+27-06-2018,Group-3,Mexico,Sweden,0,3,Sweden,Nizhny Novgorod Stadium,56.3371,43.963,Nizhny Novgorod
+27-06-2018,Group-3,South Korea,Germany,2,0,South Korea,Samara Arena,53.278,50.2372,Samara
+27-06-2018,Group-3,Switzerland,Costa Rica,2,2,Draw,Volgograd Arena,48.7344,44.5486,Volgograd
+27-06-2018,Group-3,Serbia,Brazil,0,2,Brazil,Mordovia Arena,54.1808,45.203,Saransk
+28-06-2018,Group-3,Senegal,Colombia,0,1,Columbia,Rostov Arena,47.2144,39.7386,Rostov-on-Don
+28-06-2018,Group-3,Japan,Poland,0,1,Poland,Kaliningrad Stadium,54.7104,20.509,Kaliningrad
+28-06-2018,Group-3,England,Belgium,0,1,Belgium,Spartak Stadium,55.8188,37.44,Moscow
+28-06-2018,Group-3,Panama,Tunisia,1,2,Tunisia,Central Stadium,56.8325,60.5736,Yekaterinburg
+30-06-2018,Last-16,France,Argentina,4,3,France,Luzhniki Stadium,55.7158,37.5537,Moscow
+30-06-2018,Last-16,Uruguay,Portugal,2,1,Uruguay,Saint Petersburg Stadium,59.9727,30.2219,Saint Petersburg
+01-07-2018,Last-16,Spain,Russia,1,1,Draw,Fisht Stadium,43.402,39.9549,Sochi
+01-07-2018,Last-16,Croatia,Denmark,1,1,Draw,Kazan Arena,55.82,49.1602,Kazan
+02-07-2018,Last-16,Brazil,Mexico,2,0,Brazil,Nizhny Novgorod Stadium,56.3371,43.963,Nizhny Novgorod
+02-07-2018,Last-16,Belgium,Japan,3,2,Belgium,Samara Arena,53.278,50.2372,Samara
+03-07-2018,Last-16,Sweden,Switzerland,1,0,Sweden,Volgograd Arena,48.7344,44.5486,Volgograd
+03-07-2018,Last-16,Colombia,England,1,1,Draw,Mordovia Arena,54.1808,45.203,Saransk
+06-07-2018,QFinals,Uruguay,France,0,2,France,Rostov Arena,47.2144,39.7386,Rostov-on-Don
+06-07-2018,QFinals,Brazil,Belgium,1,2,Belgium,Kaliningrad Stadium,54.7104,20.509,Kaliningrad
+07-07-2018,QFinals,Sweden,England,0,2,England,Spartak Stadium,55.8188,37.44,Moscow
+07-07-2018,QFinals,Russia,Croatia,2,2,Draw,Central Stadium,56.8325,60.5736,Yekaterinburg
+10-07-2018,SFinals,France,Belgium,1,0,France,Luzhniki Stadium,55.7158,37.5537,Moscow
+11-07-2018,SFinals,Croatia,England,2,1,Croatia,Saint Petersburg Stadium,59.9727,30.2219,Saint Petersburg
+14-07-2018,Third-Place,Belgium,England,2,0,Belgium,Fisht Stadium,43.402,39.9549,Sochi
+15-07-2018,Final,France,Croatia,4,2,France,Kazan Arena,55.82,49.1602,Kazan

@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+  overflow-x: auto;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+.tooltip-donut {
+  position: absolute;
+  text-align: center;
+  padding: .5rem;
+  background: #fff;
+  color: #313639;
+  border: 1px solid #313639;
+  border-radius: 8px;
+  pointer-events: none;
+  font-size: 0.85rem;
+  z-index: 10;
+}
+    .tooltip-bar {
+      position: absolute;
+      background: #f9fafb;
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 100;
+    }
+svg {
+  display: block;
+  margin: 0 auto;
+}
+.legend-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  display: inline-block;
+}
+.navbar-nav{
+text-align: center;
+}
+* {
+    box-sizing: border-box;
+}
+
+.col-sm-4{
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+}
+
+.row::after{
+    content: "";
+    clear: both;
+    display: table;
+}
+/*
+#hello{
+    text-align: center;
+    color: red;
+    padding-top: 5px;
+    font-size: 26px;
+}
+*/
+#hello{
+    text-align: center;
+    color: black;
+    padding-top: 5px;
+    font-size: 20px;
+    font-style: italic;
+}
+.axis-label {
+    fill: black;
+    font-size: 25pt;
+    font-family: sans-serif;
+}
+
+.navbar {
+  background-color: #1f2937;
+  color: white;
+  padding: 1rem;
+}
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+.navbar .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.navbar .links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1rem;
+}
+.navbar .links a:hover {
+  color: #facc15;
+}
+.container-xl {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem;
+}
+.responsive-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .responsive-flex {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+@media screen and (max-width: 768px) {
+  svg {
+    height: auto;
+    min-width: 900px;  
+  }
+  .legend-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.card {
+  background: #f8fafc;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 280px;
+  flex: 1;
+}
+.card-title {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}

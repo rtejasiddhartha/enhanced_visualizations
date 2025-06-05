@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>WC2018 D3 Pie Chart</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.8/d3.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="favicon.jpeg">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen font-sans">
+<nav class="bg-gray-900 text-white px-4 py-3 shadow-md">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+    <div class="text-xl font-medium tracking-wide">
+      World Cup 2018 Visualisation using D3.js
+    </div>
+    <div class="flex space-x-4 text-sm mt-2 md:mt-0">
+      <a href="WorldCup2018.html" class="hover:text-yellow-400 transition duration-150">Map</a>
+      <a href="goalsByStadium.html" class="hover:text-yellow-400 transition duration-150">Pie Chart</a>
+      <a href="knockOut.html" class="hover:text-yellow-400 transition duration-150">Scatter Plot</a>
+      <a href="goalsByCountry.html" class="hover:text-yellow-400 transition duration-150">Goals by Country</a>
+    </div>
+  </div>
+</nav>
+      <h1 class="text-center text-lg font-semibold mt-4">
+        Stadium-wise Goal Distribution in FIFA World Cup 2018 - PIE CHART
+      </h1>  
+<div class="w-full max-w-screen-xl mx-auto px-4 py-6">
+  <div class="flex flex-col lg:flex-row justify-between items-start gap-6">
+    <!-- Pie Chart + Title + Legend -->
+    <div class="w-full lg:w-2/3 overflow-x-auto">
+
+      <div class="min-w-[700px] mx-auto">
+        <svg class="w-full h-[500px] block border border-gray-300 rounded-lg"
+             viewBox="0 0 900 500"
+             preserveAspectRatio="xMidYMid meet" style="border: 1px solid #ccc;background: #f8fafc; padding: 1rem; border: 1px solid #ccc; border-radius: 8px;"></svg>
+
+        <div id="legend" class="flex flex-wrap justify-center gap-3 mt-6 text-sm"></div>
+      </div>
+    </div>
+
+    <!-- Info Card -->
+    <div id="hello"
+         class="bg-slate-100 border border-slate-300 rounded-lg shadow-md text-gray-800 text-sm p-6 h-fit w-full lg:max-w-sm font-sans leading-relaxed">
+      <strong>Hover over a pie chart segment to view stadium goals.</strong>
+      <div id="details" class="mt-2 font-medium text-blue-700"></div>
+      <p class="text-xs mt-4">
+        Total number of stadiums used in the 2018 Football World Cup: <strong>12</strong>
+      </p>
+      <div id="top3" class="text-sm mt-4"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  d3.csv("goalsByStadium.csv", function(data) {
+    var pieChart = d3.pie().value(function(d) { return +d.Goals; }).sort(null);
+    var arc = d3.arc().innerRadius(0).outerRadius(200);
+    var colorScale = d3.scaleOrdinal().range([
+      "#4B0082", "#800080", "#FF69B4", "#20B2AA", "#FF8C00",
+      "#4682B4", "#DAA520", "#708090", "#6A5ACD", "#CD5C5C",
+      "#2E8B57", "#9932CC", "#3CB371", "#B22222", "#1E90FF"
+    ]);
+
+    var pieData = pieChart(data);
+    var sorted = data.slice().sort((a,b) => +b.Goals - +a.Goals).slice(0,3);
+    var topHTML = "<strong>Top 3 Stadiums:</strong><br>" + sorted.map((d,i) => 
+      (i+1) + ". " + d.Stadium + " – " + d.Goals + " goals").join("<br>");
+    document.getElementById("top3").innerHTML = topHTML;
+    var svg = d3.select("svg")
+      .append("g")
+      .attr("transform", "translate(250,250)");
+
+    svg.selectAll("path")
+      .data(pieData)
+      .enter()
+      .append("path")
+      .attr("d", arc)
+      .style("fill", function(d, i) { return colorScale(i); })
+      .style("stroke", "white")
+      .attr("stroke-width", "0.8px")
+      .on("mouseover", function(d, i) {
+        d3.select(this).transition().duration(50).attr("opacity", 0.85);
+        d3.selectAll(".legend-item")
+          .style("font-weight", "normal")
+          .style("font-size", "0.85rem")
+          .style("color", "#000");
+
+        d3.select(".legend-item[data-legend-index='" + i + "']")
+          .style("font-weight", "bold")
+          .style("font-size", "1rem")
+          .style("color", "#e63946");
+
+        var msg = "<strong>In the " + d.data.Stadium + " Stadium</strong><br> Total No of Goals Scored are: " + d.data.Goals;
+        document.getElementById("details").innerHTML = msg;
+      })
+      .on("mouseout", function(d, i) {
+        d3.select(this).transition().duration(50).attr("opacity", 1);
+        d3.selectAll(".legend-item")
+          .style("font-weight", "normal")
+          .style("font-size", "0.85rem")
+          .style("color", "#000");
+
+        document.getElementById("details").innerHTML = "";
+      });
+    var legend = d3.select("#legend")
+      .selectAll("div")
+      .data(pieData)
+      .enter()
+      .append("div")
+      .attr("class", "legend-item")
+      .attr("data-legend-index", (d, i) => i)
+      .style("cursor", "default")
+      .html(function(d, i) {
+        return "<span class='legend-color' style='background:" + colorScale(i) + ";'></span>" + d.data.Stadium;
+      });
+  });
+</script>
+
+</body>
+</html>

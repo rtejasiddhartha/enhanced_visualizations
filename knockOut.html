@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>WC2018 Knockout Scatter Plot</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="favicon.jpeg">
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .tooltip-donut {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      pointer-events: none;
+      max-width: 250px;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen font-sans">
+<nav class="bg-gray-900 text-white px-4 py-3 shadow-md">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+    <div class="text-xl font-medium tracking-wide">World Cup 2018 Visualisation using D3.js</div>
+    <div class="flex space-x-4 text-sm mt-2 md:mt-0">
+      <a href="WorldCup2018.html" class="hover:text-yellow-400 transition duration-150">Map</a>
+      <a href="goalsByStadium.html" class="hover:text-yellow-400 transition duration-150">Pie Chart</a>
+      <a href="knockOut.html" class="hover:text-yellow-400 transition duration-150">Scatter Plot</a>
+      <a href="goalsByCountry.html" class="hover:text-yellow-400 transition duration-150">Goals by Country</a>
+    </div>
+  </div>
+</nav>
+
+<h1 class="text-center text-lg font-semibold mt-4">
+  Knockout Match Goals – Scatter Plot
+</h1>  
+<div class="w-full max-w-screen-xl mx-auto px-4 py-6">
+  <div class="flex flex-col lg:flex-row justify-between items-start gap-6">
+    <!-- Scatter Plot -->
+    <div class="w-full lg:w-2/3 overflow-x-auto">
+      <div class="min-w-[700px] mx-auto">
+        <svg id="scatterPlot" class="w-full h-[500px] block border border-gray-300 rounded-lg"
+             viewBox="0 0 900 500" preserveAspectRatio="xMidYMid meet" style="border: 1px solid #ccc;background: #f8fafc; padding: 1rem; border: 1px solid #ccc; border-radius: 8px;"></svg>
+      </div>
+    </div>
+
+    <!-- Info Card -->
+    <div id="hello"
+         class="bg-slate-100 border border-slate-300 rounded-lg shadow-md text-gray-800 text-sm p-6 h-fit w-full lg:max-w-sm font-sans leading-relaxed">
+      <strong>Click on a circle to view match details.</strong>
+      <div id="details" class="mt-2 font-medium text-blue-700">
+        This scatter plot shows number of goals in each knockout match.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  d3.csv("knockOut.csv").then(function(raw) {
+    const data = raw.map(d => ({
+      M_No: +d.M_No,
+      KnockOut_Match: d.KnockOut_Match,
+      Team1: d.Team1,
+      Team2: d.Team2,
+      Total_Goals: +d.Total_Goals
+    })).filter(d => !isNaN(d.M_No) && !isNaN(d.Total_Goals));
+
+    const svg = d3.select("#scatterPlot");
+    const width = 900;
+    const height = 500;
+    const margin = { top: 20, right: 50, bottom: 60, left: 60 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const xScale = d3.scaleLinear().domain([0, 9]).range([0, innerWidth]);
+    const yScale = d3.scaleLinear().domain([0, 7]).range([innerHeight, 0]);
+    const radiusScale = d3.scaleLinear().domain([0, 6]).range([6, 20]);
+    const colorScale = d3.scaleLinear().domain([0, 6]).range(["#facc15", "#16a34a"]);
+
+    g.append("g")
+      .attr("transform", `translate(0,${innerHeight})`)
+      .call(d3.axisBottom(xScale).ticks(8).tickFormat(d3.format("d")))
+      .append("text")
+      .attr("x", innerWidth / 2)
+      .attr("y", 40)
+      .attr("fill", "black")
+      .attr("text-anchor", "middle")
+      .text("Match Number");
+
+    g.append("g")
+      .call(d3.axisLeft(yScale).ticks(8))
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -innerHeight / 2)
+      .attr("y", -40)
+      .attr("fill", "black")
+      .attr("text-anchor", "middle")
+      .text("Goals");
+
+    const tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip-donut")
+      .style("opacity", 0);
+
+    const points = g.selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("cx", function(d) { return xScale(d.M_No); })
+      .attr("cy", function(d) { return yScale(d.Total_Goals); })
+      .attr("r", function(d) { return radiusScale(d.Total_Goals); })
+      .attr("fill", function(d) { return colorScale(d.Total_Goals); })
+      .attr("stroke", "#334155")
+      .attr("stroke-width", 1)
+      .style("cursor", "pointer")
+      .on("click", function(d) {
+        points.attr("r", function(p) { return radiusScale(p.Total_Goals); });
+        d3.select(this).attr("r", radiusScale(d.Total_Goals) + 5);
+        document.getElementById("details").innerHTML =
+          `<strong>Match ${d.M_No} – ${d.KnockOut_Match}</strong><br>` +
+          `Teams: <strong>${d.Team1} vs ${d.Team2}</strong><br>` +
+          `Goals: <strong>${d.Total_Goals}</strong><br>` +
+          `<span class="text-sm text-gray-500">Click another circle to view more.</span>`;
+      })
+      .on("mouseover", function(d) {
+        d3.select(this).attr("stroke-width", 2);
+        tooltip.transition().duration(100).style("opacity", 1);
+        tooltip.html(`Match ${d.M_No}<br>Goals: ${d.Total_Goals}`)
+          .style("left", (d3.event.pageX + 10) + "px")
+          .style("top", (d3.event.pageY - 28) + "px");
+      })
+      .on("mouseout", function() {
+        d3.select(this).attr("stroke-width", 1);
+        tooltip.transition().duration(100).style("opacity", 0);
+      });
+  });
+</script>
+</body>
+</html>
