@@ -77,6 +77,9 @@ let hostCountry = "Russia";
 let countriesGeoJSON;
 let countryCSVData = [];
 let projection;
+let lastAction = null; // ✅ Remember the last clicked function
+
+const PromiseWrapper = (xhr, d) => new Promise(resolve => xhr(d, (p) => resolve(p)));
 
 Promise.all([
   d3.json("world.geojson"),
@@ -86,13 +89,18 @@ Promise.all([
   countriesGeoJSON = geo;
   countryCSVData = country;
   matchData = match;
-  createMap(geo, country, match);
+  createMap(countriesGeoJSON, countryCSVData, matchData);
 });
+
+function setLastAction(actionFn) { // ✅ Utility to track last action
+  lastAction = actionFn;
+}
 
 function createMap(countries, countryData, fullData) {
   worldcuplocations = (countryData || []).map(d => d.Country || "");
   stadiumData = fullData.filter(d => d.Latitude && d.Longitude && !isNaN(d.Latitude) && !isNaN(d.Longitude));
   matchData = fullData;
+  countriesGeoJSON = countries;
 
   const svg = d3.select("svg");
   const bounds = svg.node().getBoundingClientRect();
@@ -132,43 +140,43 @@ function updateCard(content) {
   });
 }
 
-// ✅ Button 1: Countries Participated
 function wclocation() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => worldcuplocations.includes(d.properties.name))
     .attr("fill", "#3b82f6");
   updateCard("<strong>Countries Participated:</strong><br><br>" + worldcuplocations.join(", "));
+  setLastAction(wclocation); // ✅
 }
 
-// ✅ Button 2: World Cup Winner
 function winners() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => worldcupwinners.includes(d.properties.name))
     .attr("fill", "#10b981");
   updateCard("World Cup Winner is <strong>France</strong><br><br>France won the final match against Croatia with a score of <strong>4 - 2</strong>.");
+  setLastAction(winners); // ✅
 }
 
-// ✅ Button 3: World Cup Runner Up
 function runners() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => worldcuprunners.includes(d.properties.name))
     .attr("fill", "#f59e0b");
   updateCard("World Cup Runner Up is <strong>Croatia</strong><br><br>Croatia reached the final and lost to France with a score of <strong>2 - 4</strong>.");
+  setLastAction(runners); // ✅
 }
 
-// ✅ Button 4: Stadiums Used
 function highlightStadiums() {
   resetMap();
   const svg = d3.select("svg");
-  const validStadiums = stadiumData.filter(d =>
-    d.Stadium && d.City && !isNaN(+d.Latitude) && !isNaN(+d.Longitude));
+  svg.selectAll(".stadium").remove();
+  const validStadiums = stadiumData.filter(d => d.Stadium && d.City && !isNaN(+d.Latitude) && !isNaN(+d.Longitude));
   const uniqueMap = new Map();
-  validStadiums.forEach(d => { if (!uniqueMap.has(d.Stadium)) uniqueMap.set(d.Stadium, d); });
+  validStadiums.forEach(d => {
+    if (!uniqueMap.has(d.Stadium)) uniqueMap.set(d.Stadium, d);
+  });
   const uniqueStadiums = Array.from(uniqueMap.values());
-
   svg.selectAll(".stadium")
     .data(uniqueStadiums)
     .enter()
@@ -179,27 +187,19 @@ function highlightStadiums() {
     .attr("r", 5)
     .attr("fill", "#ec4899")
     .attr("stroke", "#000");
-
-  const stadiumList = uniqueStadiums.map(d => `${d.Stadium} (${d.City}, Russia)`);
-  updateCard("<strong>Stadiums Used:</strong><br><br>" + stadiumList.join("<br>"));
+  updateCard("<strong>Stadiums Used:</strong><br><br>" + uniqueStadiums.map(d => `${d.Stadium} (${d.City}, Russia)`).join("<br>"));
+  setLastAction(highlightStadiums); // ✅
 }
 
-// ✅ Button 5: Top Scoring Matches
 function topScoringMatches() {
   resetMap();
-  const topMatches = matchData
-    .map(d => ({
-      match: `${d.Home} vs ${d.Away}`,
-      score: `${d.Home_goals} - ${d.Away_goals}`,
-      totalGoals: (+d.Home_goals || 0) + (+d.Away_goals || 0)
-    }))
-    .sort((a, b) => b.totalGoals - a.totalGoals)
-    .slice(0, 5)
+  const topMatches = matchData.map(d => ({ match: `${d.Home} vs ${d.Away}`, score: `${d.Home_goals} - ${d.Away_goals}`, totalGoals: +d.Home_goals + +d.Away_goals }))
+    .sort((a, b) => b.totalGoals - a.totalGoals).slice(0, 5)
     .map(m => `${m.match} — ${m.score} (${m.totalGoals} goals)`);
   updateCard("<strong>Top 5 Highest Scoring Matches:</strong><br><br>" + topMatches.join("<br>"));
+  setLastAction(topScoringMatches); // ✅
 }
 
-// ✅ Button 6: Match Timeline
 function matchTimeline() {
   resetMap();
   const goalsPerDay = {};
@@ -212,9 +212,9 @@ function matchTimeline() {
     .sort((a, b) => new Date(a[0].split("-").reverse().join("-")) - new Date(b[0].split("-").reverse().join("-")))
     .map(([date, goals]) => `${date}: ${goals} goals`);
   updateCard("<strong>Goals per Match Day:</strong><br><br>" + timeline.join("<br>"));
+  setLastAction(matchTimeline); // ✅
 }
 
-// ✅ Button 7: Top 5 Goals Scoring Countries
 function goalsByCountry() {
   resetMap();
   const goalCount = {};
@@ -222,30 +222,17 @@ function goalsByCountry() {
     goalCount[d.Home] = (goalCount[d.Home] || 0) + (+d.Home_goals || 0);
     goalCount[d.Away] = (goalCount[d.Away] || 0) + (+d.Away_goals || 0);
   });
-  const topTeams = Object.entries(goalCount)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([team, goals]) => `${team}: ${goals} goals`);
+  const topTeams = Object.entries(goalCount).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([team, goals]) => `${team}: ${goals} goals`);
   updateCard("<strong>Top 5 Goal Scoring Countries:</strong><br><br>" + topTeams.join("<br>"));
+  setLastAction(goalsByCountry); // ✅
 }
 
-// ✅ Button 8: Filter by Stage
 function filterByStage() {
   resetMap();
-  const stageRank = {
-    "Group": 1, "Round of 16": 2, "Quarter Finals": 3,
-    "Semi Finals": 4, "Third Place": 5, "Final": 6
-  };
-  const stageColor = {
-    1: "#dc2626", 2: "#f97316", 3: "#8b5cf6",
-    4: "#06b6d4", 5: "#eab308", 6: "#16a34a"
-  };
-  const nameMap = {
-    "United Kingdom": "England",
-    "Republic of Serbia": "Serbia"
-  };
+  const stageRank = { "Group": 1, "Round of 16": 2, "Quarter Finals": 3, "Semi Finals": 4, "Third Place": 5, "Final": 6 };
+  const stageColor = { 1: "#dc2626", 2: "#f97316", 3: "#8b5cf6", 4: "#06b6d4", 5: "#eab308", 6: "#16a34a" };
+  const nameMap = { "United Kingdom": "England", "Republic of Serbia": "Serbia" };
   const maxStagePerCountry = {};
-
   matchData.forEach(d => {
     const raw = d.Stage || "Group";
     let stage = "Group";
@@ -257,58 +244,61 @@ function filterByStage() {
     else if (raw === "Final") stage = "Final";
     const rank = stageRank[stage];
     [d.Home, d.Away].forEach(team => {
-      if (!maxStagePerCountry[team] || rank > maxStagePerCountry[team]) {
-        maxStagePerCountry[team] = rank;
-      }
+      if (!maxStagePerCountry[team] || rank > maxStagePerCountry[team]) maxStagePerCountry[team] = rank;
     });
   });
-
   d3.select("svg").selectAll(".countries")
     .attr("fill", d => {
       const team = nameMap[d.properties.name] || d.properties.name;
       const rank = maxStagePerCountry[team];
       return stageColor[rank] || "#3F6E8D";
     });
-
   const grouped = { "Group": [], "Round of 16": [], "Quarter Finals": [], "Semi Finals": [], "Third Place": [], "Final": [] };
   Object.entries(maxStagePerCountry).forEach(([country, rank]) => {
     const stage = Object.keys(stageRank).find(key => stageRank[key] === rank);
     if (stage) grouped[stage].push(country);
   });
-
-  let html = `<strong>🎨 Stage Color Key</strong><br><br>`;
-  html += `🔴 <strong>Red</strong>: Group Stage<br>` + grouped["Group"].sort().join(", ") + "<br><br>";
-  html += `🟠 <strong>Orange</strong>: Round of 16<br>` + grouped["Round of 16"].sort().join(", ") + "<br><br>";
-  html += `🟣 <strong>Violet</strong>: Quarter Finals<br>` + grouped["Quarter Finals"].sort().join(", ") + "<br><br>";
-  html += `🟡 <strong>Yellow</strong>: Third Place<br>` + grouped["Third Place"].sort().join(", ") + "<br><br>";
-  html += `🟢 <strong>Green</strong>: Final<br>` + grouped["Final"].sort().join(", ") + "<br><br>";
+  let html = `<strong>🎨 World Cup 2018 Stage Progress Color Key</strong><br><br>`;
+  html += `🔴 <strong>Red</strong> → Group Stage Only<br><br>` + grouped["Group"].sort().join(", ") + "<br><br>";
+  html += `🟠 <strong>Orange</strong> → Round of 16<br><br>` + grouped["Round of 16"].sort().join(", ") + "<br><br>";
+  html += `🟣 <strong>Violet</strong> → Quarter Finals<br><br>` + grouped["Quarter Finals"].sort().join(", ") + "<br><br>";
+  html += `🟡 <strong>Yellow</strong> → Third Place<br><br>` + grouped["Third Place"].sort().join(", ") + "<br><br>";
+  html += `🟢 <strong>Green</strong> → Final<br><br>` + grouped["Final"].sort().join(", ") + "<br><br>";
   updateCard(html);
+  setLastAction(filterByStage); // ✅
 }
 
-// ✅ Button 9: Host Country Highlight
 function hostHighlight() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => d.properties.name === hostCountry)
     .attr("fill", "#f43f5e")
-    .attr("stroke", "#000");
+    .attr("stroke", "black");
   updateCard("<strong>Host Country:</strong><br><br>Russia hosted the FIFA World Cup 2018.");
+  setLastAction(hostHighlight); // ✅
 }
 
-// ✅ Button 10: Head-to-Head Matches
 function headToHead() {
   resetMap();
-  const matchups = matchData.map(d =>
-    `${d.Home} ${d.Home_goals} - ${d.Away_goals} ${d.Away}`
-  );
+  const matchups = matchData.map(d => `${d.Home} ${d.Home_goals} - ${d.Away_goals} ${d.Away}`);
   updateCard("<strong>All Head-to-Head Match Results:</strong><br><br>" + matchups.join("<br>"));
+  setLastAction(headToHead); // ✅
 }
 
-// ✅ Prevent clearing on resize for mobile
+// ✅ On resize or visibility restore the last action
 window.addEventListener("resize", () => {
   if (!countriesGeoJSON || !countryCSVData || !matchData) return;
   d3.select("svg").selectAll("*").remove();
   createMap(countriesGeoJSON, countryCSVData, matchData);
+  if (typeof lastAction === "function") {
+    setTimeout(() => lastAction(), 200);
+  }
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && typeof lastAction === "function") {
+    lastAction();
+  }
 });
 </script>
 </body>
