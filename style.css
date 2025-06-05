@@ -6,6 +6,9 @@ body {
   overflow-y: auto;
   min-height: 100vh;
 }
+#viz {
+  contain: layout;
+}
 .tooltip-donut {
   position: absolute;
   text-align: center;
