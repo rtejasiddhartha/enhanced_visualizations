@@ -116,7 +116,7 @@ svg.selectAll("path")
   .append("path")
   .attr("d", path)
   .attr("class", "countries")
-  .style("fill", "#3F6E8D")
+  .att("fill", "#3F6E8D")
   .style("stroke", "white");
 
   
@@ -124,7 +124,7 @@ svg.selectAll("path")
 
 function resetMap() {
   d3.select("svg").selectAll(".countries")
-    .style("fill", "#3F6E8D");
+    .attr("fill", "#3F6E8D");
   d3.select("svg").selectAll(".stadium").remove();
 }
 
@@ -144,7 +144,7 @@ function wclocation() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => worldcuplocations.includes(d.properties.name))
-    .style("fill", "#3b82f6");
+    .attr("fill", "#3b82f6");
   updateCard("<strong>Countries Participated:</strong><br><br>" + worldcuplocations.join(", "));
 }
 
@@ -152,7 +152,7 @@ function winners() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => worldcupwinners.includes(d.properties.name))
-    .style("fill", "#10b981");
+    .attr("fill", "#10b981");
   updateCard("World Cup Winner is <strong>France</strong><br><br>France won the final match against Croatia with a score of <strong>4 - 2</strong>.");
 }
 
@@ -160,7 +160,7 @@ function runners() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => worldcuprunners.includes(d.properties.name))
-    .style("fill", "#f59e0b");
+    .attr("fill", "#f59e0b");
   updateCard("World Cup Runner Up is <strong>Croatia</strong><br><br>Croatia reached the final and lost to France with a score of <strong>2 - 4</strong>.");
 }
 
@@ -192,7 +192,7 @@ function highlightStadiums() {
     .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
     .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
     .attr("r", 5)
-    .style("fill", "#ec4899")
+    .attr("fill", "#ec4899")
     .style("stroke", "#000");
 
   const stadiumList = uniqueStadiums.map(d =>
@@ -364,7 +364,7 @@ function hostHighlight() {
   resetMap();
   d3.select("svg").selectAll(".countries")
     .filter(d => d.properties.name === hostCountry)
-    .style("fill", "#f43f5e")
+    .attr("fill", "#f43f5e")
     .style("stroke", "black");
   updateCard("<strong>Host Country:</strong><br><br>Russia hosted the FIFA World Cup 2018.");
 }
