@@ -75,6 +75,7 @@ let stadiumData = [];
 let matchData = [];
 let hostCountry = "Russia";
 let countriesGeoJSON; // 
+let countryCSVData = [];  
 let projection;
 
 const PromiseWrapper = (xhr, d) => new Promise(resolve => xhr(d, (p) => resolve(p)));
@@ -84,7 +85,10 @@ Promise.all([
   d3.csv("World_cup_2018_country.csv"),
   d3.csv("WorldCup2018_Enriched.csv")
 ]).then(([geo, country, match]) => {
-  createMap(geo, country, match); 
+  countriesGeoJSON = geo;
+  countryCSVData = country;
+  matchData = match;
+  createMap(countriesGeoJSON, countryCSVData, matchData); 
 });
 
 
@@ -375,9 +379,15 @@ function headToHead() {
   updateCard("<strong>All Head-to-Head Match Results:</strong><br><br>" + matchups.join("<br>"));
 }
   
+//window.addEventListener("resize", () => {
+//  d3.select("svg").selectAll("*").remove();
+//  createMap(countriesGeoJSON, worldcuplocations, matchData);
+//});  
+
 window.addEventListener("resize", () => {
+  if (!countriesGeoJSON || !countryCSVData || !matchData) return; // ✅ guard clause
   d3.select("svg").selectAll("*").remove();
-  createMap(countriesGeoJSON, worldcuplocations, matchData);
+  createMap(countriesGeoJSON, countryCSVData, matchData); // ✅ correct dataset
 });  
 
 </script>
