@@ -117,7 +117,7 @@ svg.selectAll("path")
   .attr("d", path)
   .attr("class", "countries")
   .attr("fill", "#3F6E8D")
-  .style("stroke", "white");
+  .attr("stroke", "white");
 
   
 }
@@ -193,7 +193,7 @@ function highlightStadiums() {
     .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
     .attr("r", 5)
     .attr("fill", "#ec4899")
-    .style("stroke", "#000");
+    .attr("stroke", "#000");
 
   const stadiumList = uniqueStadiums.map(d =>
     `${d.Stadium} (${d.City}, Russia)`
@@ -301,7 +301,7 @@ function filterByStage() {
 
   // Apply colors to map
   d3.select("svg").selectAll(".countries")
-    .style("fill", d => {
+    .attr("fill", d => {
       const team = nameMap[d.properties.name] || d.properties.name;
       const rank = maxStagePerCountry[team];
       return stageColor[rank] || "#3F6E8D";
@@ -365,7 +365,7 @@ function hostHighlight() {
   d3.select("svg").selectAll(".countries")
     .filter(d => d.properties.name === hostCountry)
     .attr("fill", "#f43f5e")
-    .style("stroke", "black");
+    .attr("stroke", "black");
   updateCard("<strong>Host Country:</strong><br><br>Russia hosted the FIFA World Cup 2018.");
 }
 
