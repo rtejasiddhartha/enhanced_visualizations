@@ -7,6 +7,14 @@ The goal of the project is to turn complex match and team statistics into **clea
 
 ---
 
+## 🔗 Live Project
+
+⚽ **Explore the Visualization:**  https://worldcup2018visualizations.netlify.app/
+
+Interact with dynamic charts, maps, and tournament insights directly in your browser.
+
+---
+
 ## 🌍 What This Project Does
 
 The application allows users to analyze:
